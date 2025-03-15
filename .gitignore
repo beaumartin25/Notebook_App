@@ -1,0 +1,9 @@
+
+.vs/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.db3
+

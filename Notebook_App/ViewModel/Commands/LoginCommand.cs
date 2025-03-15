@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+namespace Notebook_App.ViewModel.Commands
+{
+    public class LoginCommand : ICommand
+    {
+        public LoginVM VM { get; set; }
+        public event EventHandler? CanExecuteChanged;
+
+        // Constructor
+        public LoginCommand(LoginVM vm)
+        {
+            VM = vm;
+        }
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object? parameter)
+        {
+            //TODO: add login
+        }
+    }
+}
