@@ -13,6 +13,7 @@ namespace Notebook_App.ViewModel
 {
     public class NotesVM : INotifyPropertyChanged
     {
+		// properties
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<Notebook> Notebooks { get; set; }
@@ -31,7 +32,7 @@ namespace Notebook_App.ViewModel
 			}
 		}
 
-
+		// Command properties
 		public NewNotebookCommand NewNotebookCommand { get; set; }
 		public NewNoteCommand NewNoteCommand { get; set; }
 
@@ -47,6 +48,7 @@ namespace Notebook_App.ViewModel
 			GetNoteBooks();
 		}
 
+		// Method for creating new notebook
 		public void CreateNotebook()
 		{
 			Notebook newNotebook = new Notebook()
@@ -59,6 +61,7 @@ namespace Notebook_App.ViewModel
 			GetNoteBooks();
 		}
 
+		// Method for creating new note
 		public void CreateNote(int notebookId)
 		{
 			Note newNote = new Note()
@@ -86,7 +89,7 @@ namespace Notebook_App.ViewModel
 			}
 		}
 
-        // Method to ge notes from database helper
+        // Method to get notes from database helper
         private void GetNotes()
         {
 			if (SelectedNotebook != null)
