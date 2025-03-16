@@ -15,13 +15,14 @@ namespace Notebook_App.ViewModel
     {
 		// properties
         public event PropertyChangedEventHandler? PropertyChanged;
+		public event EventHandler SelectedNoteChanged;
 
         public ObservableCollection<Notebook> Notebooks { get; set; }
         public ObservableCollection<Note> Notes { get; set; }
 
 
         private Notebook selectedNotebook;
-        public Notebook SelectedNotebook
+		public Notebook SelectedNotebook
 		{
 			get { return selectedNotebook; }
 			set
@@ -31,6 +32,20 @@ namespace Notebook_App.ViewModel
 				GetNotes();
 			}
 		}
+
+		private Note selectedNote;
+
+		public Note SelectedNote
+		{
+			get { return selectedNote; }
+			set
+			{
+				selectedNote = value;
+				OnPropertyChanged("SelectedNote");
+				SelectedNoteChanged?.Invoke(this, EventArgs.Empty);
+			}
+		}
+
 
 		// Command properties
 		public NewNotebookCommand NewNotebookCommand { get; set; }

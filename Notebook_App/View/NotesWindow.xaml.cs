@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Notebook_App.ViewModel;
+using Notebook_App.ViewModel.Helpers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,15 +23,37 @@ namespace Notebook_App.View
     /// </summary>
     public partial class NotesWindow : Window
     {
+        NotesVM viewModel;
+
         public NotesWindow()
         {
             InitializeComponent();
+
+            // copying resource from XMAL to code behind
+            viewModel = Resources["vm"] as NotesVM;
+            viewModel.SelectedNoteChanged += ViewModel_SelectedNoteChanged;
 
             var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             fontFamilyComboBox.ItemsSource = fontFamilies;
 
             List<Double> fontSizes = new List<Double>() { 8, 9, 10, 11, 12, 14, 28, 48 , 72};
             fontSizeComboBox.ItemsSource = fontSizes;
+        }
+
+        // method to load content from file location
+        private void ViewModel_SelectedNoteChanged(object? sender, EventArgs e)
+        {
+            contentRichTextBox.Document.Blocks.Clear();
+            if (viewModel.SelectedNote != null)
+            {
+                if (!string.IsNullOrEmpty(viewModel.SelectedNote.FileLocation))
+                {
+                    FileStream filestream = new FileStream(viewModel.SelectedNote.FileLocation, FileMode.Open);
+                    var contents = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
+                    contents.Load(filestream, DataFormats.Rtf);
+                    filestream.Close();
+                }
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -103,6 +128,18 @@ namespace Notebook_App.View
         private void fontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string rtfFile = System.IO.Path.Combine(Environment.CurrentDirectory, $"{viewModel.SelectedNote.Id}.rtf");
+            viewModel.SelectedNote.FileLocation = rtfFile;
+            DatabaseHelper.Update(viewModel.SelectedNote);
+
+            FileStream fileStream = new FileStream(rtfFile, FileMode.Create);
+            var contents = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
+            contents.Save(fileStream, DataFormats.Rtf);
+            fileStream.Close();
         }
     }
 }
