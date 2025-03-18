@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +64,7 @@ namespace Notebook_App.ViewModel
 		public NewNoteCommand NewNoteCommand { get; set; }
         public RenameNotebookCommand RenameNotebookCommand { get; set; }
 		public EndRenameNotebookCommand EndRenameNotebookCommand { get; set; }
+		public DeleteNotebookCommand DeleteNotebookCommand { get; set; }
 
         // Constructor
         public NotesVM()
@@ -71,6 +73,7 @@ namespace Notebook_App.ViewModel
 			NewNoteCommand = new NewNoteCommand(this);
 			RenameNotebookCommand = new RenameNotebookCommand(this);
 			EndRenameNotebookCommand = new EndRenameNotebookCommand(this);
+			DeleteNotebookCommand = new DeleteNotebookCommand(this);
 
 			Notebooks = new ObservableCollection<Notebook>();
 			Notes = new ObservableCollection<Note>();
@@ -150,6 +153,30 @@ namespace Notebook_App.ViewModel
 			DatabaseHelper.Update(notebook);
 			GetNoteBooks();
         }
+
+		// Method to delete a notebook and notes corresponding with notebook
+		public void DeleteNotebook(Notebook notebook)
+		{
+            var notes = DatabaseHelper.Read<Note>().Where(n => n.NotebookId == notebook.Id).ToList();
+			foreach (var note in notes)
+			{
+				if (!string.IsNullOrEmpty(note.FileLocation) && File.Exists(note.FileLocation))
+				{
+					try
+					{
+						File.Delete(note.FileLocation);
+					}
+					catch (Exception ex) 
+					{
+						MessageBox.Show($"Failed to delete file: {note.FileLocation}\nError: {ex.Message}");
+					}
+				}
+                DatabaseHelper.Delete(note);
+            }
+            DatabaseHelper.Delete(notebook);
+            GetNoteBooks();
+			Notes.Clear();
+		}
 
         private void OnPropertyChanged(string propertyName)
 		{
