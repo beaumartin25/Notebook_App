@@ -13,12 +13,24 @@
     <Compile Update="View\NotesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\UserControls\NotebookControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\UserControls\NoteControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\NotesWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\UserControls\NotebookControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\UserControls\NoteControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

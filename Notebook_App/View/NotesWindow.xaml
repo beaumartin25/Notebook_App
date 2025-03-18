@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notebook_App.View"
+        xmlns:uc="clr-namespace:Notebook_App.View.UserControls"
         xmlns:vm="clr-namespace:Notebook_App.ViewModel"
         mc:Ignorable="d"
         Title="NotesWindow" Height="450" Width="800">
@@ -33,22 +34,24 @@
             </StatusBarItem>
         </StatusBar>
         <ListView DockPanel.Dock="Left"
+                  Background="Gray"
                   Width="140"
                   SelectedValue="{Binding SelectedNotebook, Mode=TwoWay}"
                   ItemsSource="{Binding Notebooks}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
+                    <uc:NotebookControl Notebook="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
         <ListView DockPanel.Dock="Left"
+                  Background="DarkGray"
                   Width="140"
                   SelectedValue="{Binding SelectedNote, Mode=TwoWay}"
                   ItemsSource="{Binding Notes}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}"/>
+                    <uc:NoteControl Note="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
