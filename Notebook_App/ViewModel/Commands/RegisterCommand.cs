@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notebook_App.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,12 +21,24 @@ namespace Notebook_App.ViewModel.Commands
 
         public bool CanExecute(object? parameter)
         {
+            User user = parameter as User;
+
+            if (user == null)
+                return false;
+            if (string.IsNullOrEmpty(user.Firstname)) 
+                return false;
+            if (string.IsNullOrEmpty(user.Lastname)) 
+                return false;
+            if (string.IsNullOrEmpty(user.Username)) 
+                return false;
+            if (string.IsNullOrEmpty(user.Password)) 
+                return false;
             return true;
         }
 
         public void Execute(object? parameter)
         {
-            throw new NotImplementedException();
+            VM.Register();
         }
     }
 }

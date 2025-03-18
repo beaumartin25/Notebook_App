@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notebook_App.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,18 @@ namespace Notebook_App.View
     /// </summary>
     public partial class LoginWindow : Window
     {
+        LoginVM ViewModel;
         public LoginWindow()
         {
             InitializeComponent();
+
+            ViewModel = Resources["vm"] as LoginVM;
+            ViewModel.Authenticated += ViewModel_Authenticated;
+        }
+
+        private void ViewModel_Authenticated(object? sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

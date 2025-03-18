@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Notebook_App.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,6 +66,22 @@ namespace Notebook_App.ViewModel.Helpers
             }
 
             return items;
+        }
+
+        // validate the username and password
+        public static bool ValidateUser(string username, string password)
+        {
+            User user = Read<User>().FirstOrDefault(u => u.Username == username);
+
+            if (user !=  null)
+            {
+                if (user.Password == password)
+                {
+                    App.UserID = user.Id;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

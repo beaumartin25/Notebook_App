@@ -56,6 +56,21 @@ namespace Notebook_App.View
             }
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (App.UserID == 0)
+            {
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.Owner = this;
+                loginWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                loginWindow.ShowDialog();
+
+                viewModel.GetNoteBooks();
+            }
+        }
+
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -119,18 +134,21 @@ namespace Notebook_App.View
             }
         }
 
+        // changes font of text
         private void fontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (fontFamilyComboBox.SelectedItem != null)
                 contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, fontFamilyComboBox.SelectedItem);
         }
 
+        // changes font size
         private void fontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             contentRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // Saves file
+        private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             string rtfFile = System.IO.Path.Combine(Environment.CurrentDirectory, $"{viewModel.SelectedNote.Id}.rtf");
             viewModel.SelectedNote.FileLocation = rtfFile;

@@ -70,8 +70,9 @@
                           Width="50"
                           IsEditable="True"
                           TextBoxBase.TextChanged="fontSizeComboBox_TextChanged"/>
-                <Button Content="Save"
-                        Click="Button_Click"/>
+                <Button x:Name="saveButton"
+                        Content="Save"
+                        Click="saveButton_Click"/>
             </ToolBar>
         </ToolBarTray>
         <Grid>

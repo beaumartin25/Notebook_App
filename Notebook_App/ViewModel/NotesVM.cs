@@ -68,7 +68,8 @@ namespace Notebook_App.ViewModel
 		{
 			Notebook newNotebook = new Notebook()
 			{
-				Name = "new notebook"
+				Name = "new notebook",
+				UserId = App.UserID
 			};
 
 			DatabaseHelper.Insert(newNotebook);
@@ -93,9 +94,9 @@ namespace Notebook_App.ViewModel
 		}
 
 		// Method to get noteboosk from database helper
-		private void GetNoteBooks()
+		public void GetNoteBooks()
 		{
-			var notebooks = DatabaseHelper.Read<Notebook>();
+			var notebooks = DatabaseHelper.Read<Notebook>().Where(n => n.UserId == App.UserID).ToList();
 
 			Notebooks.Clear();
 			foreach (var notebook in notebooks)
