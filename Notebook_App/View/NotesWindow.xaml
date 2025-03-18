@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Notebook_App.View"
         xmlns:uc="clr-namespace:Notebook_App.View.UserControls"
         xmlns:vm="clr-namespace:Notebook_App.ViewModel"
@@ -40,7 +41,22 @@
                   ItemsSource="{Binding Notebooks}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <uc:NotebookControl Notebook="{Binding}"/>
+                    <Grid>
+                        <uc:NotebookControl Notebook="{Binding}">
+                            <uc:NotebookControl.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Rename" Command="{Binding Source={StaticResource vm}, Path=RenameNotebookCommand}"/>
+                                </ContextMenu>
+                            </uc:NotebookControl.ContextMenu>
+                        </uc:NotebookControl>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" Visibility="{Binding Source={StaticResource vm}, Path=IsRenameVisible}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=EndRenameNotebookCommand}" CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -51,7 +67,8 @@
                   ItemsSource="{Binding Notes}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <uc:NoteControl Note="{Binding}"/>
+                    <uc:NoteControl Note="{Binding}">
+                    </uc:NoteControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
