@@ -47,24 +47,38 @@ namespace Notebook_App.ViewModel
 			}
 		}
 
-		private Visibility isRenameVisible;
-		public Visibility IsRenameVisible
-		{
-			get { return isRenameVisible; }
+		private Visibility isRenameNotebookVisible;
+		public Visibility IsRenameNotebookVisible
+        {
+			get { return isRenameNotebookVisible; }
 			set 
 			{
-                isRenameVisible = value;
-				OnPropertyChanged("IsRenameVisible");
+                isRenameNotebookVisible = value;
+				OnPropertyChanged("IsRenameNotebookVisible");
 			}
 		}
 
+        private Visibility isRenameNoteVisible;
+        public Visibility IsRenameNoteVisible
+        {
+            get { return isRenameNoteVisible; }
+            set
+            {
+                isRenameNoteVisible = value;
+                OnPropertyChanged("IsRenameNoteVisible");
+            }
+        }
 
-		// Command properties
-		public NewNotebookCommand NewNotebookCommand { get; set; }
+
+        // Command properties
+        public NewNotebookCommand NewNotebookCommand { get; set; }
 		public NewNoteCommand NewNoteCommand { get; set; }
         public RenameNotebookCommand RenameNotebookCommand { get; set; }
 		public EndRenameNotebookCommand EndRenameNotebookCommand { get; set; }
 		public DeleteNotebookCommand DeleteNotebookCommand { get; set; }
+		public RenameNoteCommand RenameNoteCommand { get; set; }
+		public EndRenameNoteCommand EndRenameNoteCommand { get; set; }
+		public DeleteNoteCommand DeleteNoteCommand { get; set; }
 
         // Constructor
         public NotesVM()
@@ -74,11 +88,15 @@ namespace Notebook_App.ViewModel
 			RenameNotebookCommand = new RenameNotebookCommand(this);
 			EndRenameNotebookCommand = new EndRenameNotebookCommand(this);
 			DeleteNotebookCommand = new DeleteNotebookCommand(this);
+            RenameNoteCommand = new RenameNoteCommand(this);
+            EndRenameNoteCommand = new EndRenameNoteCommand(this);
+            DeleteNoteCommand = new DeleteNoteCommand(this);
 
-			Notebooks = new ObservableCollection<Notebook>();
+            Notebooks = new ObservableCollection<Notebook>();
 			Notes = new ObservableCollection<Note>();
 
-			IsRenameVisible = Visibility.Collapsed;
+            IsRenameNotebookVisible = Visibility.Collapsed;
+			IsRenameNoteVisible = Visibility.Collapsed;
 
 			GetNoteBooks();
 		}
@@ -141,15 +159,15 @@ namespace Notebook_App.ViewModel
         }
 
 		// Method to start show the renaming text box
-		public void StartRenaming()
+		public void StartRenamingNotebook()
 		{
-			IsRenameVisible = Visibility.Visible;
+            IsRenameNotebookVisible = Visibility.Visible;
 		}
 
 		// Method to stop showing renaming text box and update notebook name
-        public void StopRenaming(Notebook notebook)
+        public void StopRenamingNotebook(Notebook notebook)
         {
-            IsRenameVisible = Visibility.Collapsed;
+            IsRenameNotebookVisible = Visibility.Collapsed;
 			DatabaseHelper.Update(notebook);
 			GetNoteBooks();
         }
@@ -177,6 +195,39 @@ namespace Notebook_App.ViewModel
             GetNoteBooks();
 			Notes.Clear();
 		}
+
+        // Method to start show the renaming text box
+        public void StartRenamingNote()
+        {
+            IsRenameNoteVisible = Visibility.Visible;
+        }
+
+        // Method to stop showing renaming text box and update note name
+        public void StopRenamingNote(Note note)
+        {
+            IsRenameNoteVisible = Visibility.Collapsed;
+            DatabaseHelper.Update(note);
+            GetNotes();
+        }
+
+        // Method to delete the note
+        public void DeleteNote(Note note)
+        {
+           
+            if (!string.IsNullOrEmpty(note.FileLocation) && File.Exists(note.FileLocation))
+            {
+                try
+                {
+                    File.Delete(note.FileLocation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to delete file: {note.FileLocation}\nError: {ex.Message}");
+                }
+            }
+            DatabaseHelper.Delete(note);
+            GetNotes();
+        }
 
         private void OnPropertyChanged(string propertyName)
 		{

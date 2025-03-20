@@ -8,13 +8,13 @@ using System.Windows.Input;
 
 namespace Notebook_App.ViewModel.Commands
 {
-    public class EndRenameNotebookCommand : ICommand
+    public class EndRenameNoteCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
         public NotesVM VM { get; set; }
 
-        public EndRenameNotebookCommand(NotesVM vm)
+        public EndRenameNoteCommand(NotesVM vm)
         {
             VM = vm;
         }
@@ -26,9 +26,9 @@ namespace Notebook_App.ViewModel.Commands
 
         public void Execute(object? parameter)
         {
-            Notebook notebook = parameter as Notebook;
-            if (notebook != null)
-                VM.StopRenamingNotebook(notebook);
+            Note note = parameter as Note;
+            if (note != null)
+                VM.StopRenamingNote(note);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Notebook_App.ViewModel.Commands
 
         public void Execute(object? parameter)
         {
-            VM.StartRenaming();
+            VM.StartRenamingNotebook();
         }
     }
 }
