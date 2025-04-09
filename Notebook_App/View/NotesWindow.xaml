@@ -8,7 +8,7 @@
         xmlns:uc="clr-namespace:Notebook_App.View.UserControls"
         xmlns:vm="clr-namespace:Notebook_App.ViewModel"
         mc:Ignorable="d"
-        Title="NotesWindow" Height="450" Width="800">
+        Title="NotesWindow" Height="450" Width="800" MinHeight="200" MinWidth="500">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -101,7 +101,13 @@
                 </ToggleButton>
                 <ComboBox x:Name="fontFamilyComboBox"
                           Width="100"
-                          SelectionChanged="fontFamilyComboBox_SelectionChanged"/>
+                          SelectionChanged="fontFamilyComboBox_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Source}" FontFamily="{Binding}" FontSize="12" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <ComboBox x:Name="fontSizeComboBox"
                           Width="50"
                           IsEditable="True"
