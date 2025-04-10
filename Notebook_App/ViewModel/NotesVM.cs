@@ -106,7 +106,7 @@ namespace Notebook_App.ViewModel
 		{
 			Notebook newNotebook = new Notebook()
 			{
-				Name = "new notebook",
+				Name = "Notebook",
 				UserId = App.UserID
 			};
 
@@ -123,7 +123,7 @@ namespace Notebook_App.ViewModel
 				NotebookId = notebookId,
 				CreatedAt = DateTime.Now,
 				UpdatedAt = DateTime.Now,
-				Title = $"New note {DateTime.Now.ToString()}"
+				Title = $"Note {DateTime.Now.ToString()}"
 			};
 
 			DatabaseHelper.Insert(newNote);

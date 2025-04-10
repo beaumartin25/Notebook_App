@@ -40,7 +40,7 @@ namespace Notebook_App.View
             fontSizeComboBox.ItemsSource = fontSizes;
         }
 
-        // method to load content from file location
+        // method to load content to contentRichTextBox from file location
         private void ViewModel_SelectedNoteChanged(object? sender, EventArgs e)
         {
             contentRichTextBox.Document.Blocks.Clear();
