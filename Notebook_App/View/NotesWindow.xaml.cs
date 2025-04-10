@@ -56,6 +56,7 @@ namespace Notebook_App.View
             }
         }
 
+        // overide the window Onactivated method to pop up login information
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
@@ -71,7 +72,29 @@ namespace Notebook_App.View
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        // logout of user
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            // clear the current user session and clean up UI
+            App.UserID = 0;
+            contentRichTextBox.Document.Blocks.Clear();
+            viewModel.SelectedNote = null;
+            viewModel.Notebooks.Clear();
+            viewModel.Notes.Clear();
+
+            // open up login window
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Owner = this;
+            loginWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            loginWindow.ShowDialog();
+
+
+            viewModel.GetNoteBooks();
+        }
+
+        // exit application
+        private void exitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }

@@ -25,8 +25,12 @@
                           Command="{Binding NewNoteCommand}"
                           CommandParameter="{Binding SelectedNotebook}"/>
                 <Separator/>
-                <MenuItem Header="Exit"
-                          Click="MenuItem_Click"/>
+                <MenuItem x:Name="logoutButton"
+                          Header="Logout"
+                          Click="logoutButton_Click"/>
+                <MenuItem x:Name="exitButton"
+                          Header="Exit"
+                          Click="exitButton_Click"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
