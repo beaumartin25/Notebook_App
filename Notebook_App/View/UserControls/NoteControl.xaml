@@ -5,17 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Notebook_App.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="300">
+             d:DesignHeight="60" d:DesignWidth="300">
     <StackPanel>
         <TextBlock Text="{Binding Title}"
                    Foreground="White"
-                   Margin="15"
-                   FontSize="10"
+                   Margin="15,5,15,5"
+                   FontSize="12"
                    VerticalAlignment="Center"/>
-        <TextBlock Text="{Binding UpdatedAt}"
-                   Foreground="White"
-                   Margin="15"
-                   FontSize="10"
-                   VerticalAlignment="Center"/>
+        <StackPanel Margin="15,0,15,5">
+            <TextBlock Text="Last Updated At"
+                       FontSize="7"/>
+            <TextBlock Text="{Binding UpdatedAt}"
+                       Foreground="White"
+                       FontSize="10"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

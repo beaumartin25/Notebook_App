@@ -123,7 +123,7 @@ namespace Notebook_App.ViewModel
 				NotebookId = notebookId,
 				CreatedAt = DateTime.Now,
 				UpdatedAt = DateTime.Now,
-				Title = $"Note {DateTime.Now.ToString()}"
+				Title = $"New Note"
 			};
 
 			DatabaseHelper.Insert(newNote);

@@ -171,6 +171,7 @@ namespace Notebook_App.View
         }
 
         // Saves file
+        // Chose to handle saving logic here in the code-behind instead of a full MVVM command to keep RichTextBox interaction and file operations close to the view layer for simplicity.
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             string rtfFile = System.IO.Path.Combine(Environment.CurrentDirectory, $"{viewModel.SelectedNote.Id}.rtf");
