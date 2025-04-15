@@ -1,4 +1,5 @@
 ﻿using Notebook_App.Model;
+using Notebook_App.Services;
 using Notebook_App.ViewModel.Commands;
 using Notebook_App.ViewModel.Helpers;
 using System;
@@ -101,46 +102,56 @@ namespace Notebook_App.ViewModel
 			GetNoteBooks();
 		}
 
+
+		// Notebooks
 		// Method for creating new notebook
 		public void CreateNotebook()
 		{
-			Notebook newNotebook = new Notebook()
-			{
-				Name = "Notebook",
-				UserId = App.UserID
-			};
-
-			DatabaseHelper.Insert(newNotebook);
-
+			NotebookService.CreateNotebook();
 			GetNoteBooks();
 		}
 
-		// Method for creating new note
-		public void CreateNote(int notebookId)
+        // Method to get notebooks from database helper
+        public void GetNoteBooks()
+        {
+            var notebooks = DatabaseHelper.Read<Notebook>().Where(n => n.UserId == App.UserID).ToList();
+
+            Notebooks.Clear();
+            foreach (var notebook in notebooks)
+            {
+                Notebooks.Add(notebook);
+            }
+        }
+
+        // Method to start show the renaming text box
+        public void StartRenamingNotebook()
+        {
+            IsRenameNotebookVisible = Visibility.Visible;
+        }
+
+        // Method to stop showing renaming text box and update notebook name
+        public void StopRenamingNotebook(Notebook notebook)
+        {
+            IsRenameNotebookVisible = Visibility.Collapsed;
+            DatabaseHelper.Update(notebook);
+            GetNoteBooks();
+        }
+
+        // Method to delete a notebook and notes corresponding with notebook
+        public void DeleteNotebook(Notebook notebook)
+        {
+            NotebookService.DeleteNotebook(notebook);
+            GetNoteBooks();
+            Notes.Clear();
+        }
+
+
+        // Notes
+        // Method for creating new note
+        public void CreateNote(int notebookId)
 		{
-			Note newNote = new Note()
-			{
-				NotebookId = notebookId,
-				CreatedAt = DateTime.Now,
-				UpdatedAt = DateTime.Now,
-				Title = $"New Note"
-			};
-
-			DatabaseHelper.Insert(newNote);
-
+			NoteService.CreateNote(notebookId);
 			GetNotes();
-		}
-
-		// Method to get noteboosk from database helper
-		public void GetNoteBooks()
-		{
-			var notebooks = DatabaseHelper.Read<Notebook>().Where(n => n.UserId == App.UserID).ToList();
-
-			Notebooks.Clear();
-			foreach (var notebook in notebooks)
-			{
-				Notebooks.Add(notebook);
-			}
 		}
 
         // Method to get notes from database helper
@@ -157,44 +168,6 @@ namespace Notebook_App.ViewModel
 				}
 			}
         }
-
-		// Method to start show the renaming text box
-		public void StartRenamingNotebook()
-		{
-            IsRenameNotebookVisible = Visibility.Visible;
-		}
-
-		// Method to stop showing renaming text box and update notebook name
-        public void StopRenamingNotebook(Notebook notebook)
-        {
-            IsRenameNotebookVisible = Visibility.Collapsed;
-			DatabaseHelper.Update(notebook);
-			GetNoteBooks();
-        }
-
-		// Method to delete a notebook and notes corresponding with notebook
-		public void DeleteNotebook(Notebook notebook)
-		{
-            var notes = DatabaseHelper.Read<Note>().Where(n => n.NotebookId == notebook.Id).ToList();
-			foreach (var note in notes)
-			{
-				if (!string.IsNullOrEmpty(note.FileLocation) && File.Exists(note.FileLocation))
-				{
-					try
-					{
-						File.Delete(note.FileLocation);
-					}
-					catch (Exception ex) 
-					{
-						MessageBox.Show($"Failed to delete file: {note.FileLocation}\nError: {ex.Message}");
-					}
-				}
-                DatabaseHelper.Delete(note);
-            }
-            DatabaseHelper.Delete(notebook);
-            GetNoteBooks();
-			Notes.Clear();
-		}
 
         // Method to start show the renaming text box
         public void StartRenamingNote()
@@ -213,21 +186,10 @@ namespace Notebook_App.ViewModel
         // Method to delete the note
         public void DeleteNote(Note note)
         {
-           
-            if (!string.IsNullOrEmpty(note.FileLocation) && File.Exists(note.FileLocation))
-            {
-                try
-                {
-                    File.Delete(note.FileLocation);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Failed to delete file: {note.FileLocation}\nError: {ex.Message}");
-                }
-            }
-            DatabaseHelper.Delete(note);
+			NoteService.DeleteNote(note);
             GetNotes();
         }
+
 
         private void OnPropertyChanged(string propertyName)
 		{
