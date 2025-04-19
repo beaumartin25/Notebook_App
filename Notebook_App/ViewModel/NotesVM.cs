@@ -70,6 +70,18 @@ namespace Notebook_App.ViewModel
             }
         }
 
+        private string searchQuery;
+        public string SearchQuery
+        {
+            get { return searchQuery; }
+            set
+            {
+                searchQuery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+                GetNotes();
+            }
+        }
+
 
         // Command properties
         public NewNotebookCommand NewNotebookCommand { get; set; }
@@ -154,19 +166,28 @@ namespace Notebook_App.ViewModel
 			GetNotes();
 		}
 
-        // Method to get notes from database helper
+        // Method to get notes from database helper but also adjusts to search query
         private void GetNotes()
         {
-			if (SelectedNotebook != null)
-			{
-				var notes = DatabaseHelper.Read<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList();
+            if (SelectedNotebook != null)
+            {
+                var notes = DatabaseHelper.Read<Note>()
+                                          .Where(n => n.NotebookId == SelectedNotebook.Id)
+                                          .ToList();
 
-				Notes.Clear();
-				foreach (var note in notes)
-				{
-					Notes.Add(note);
-				}
-			}
+                if (!string.IsNullOrWhiteSpace(SearchQuery))
+                {
+                    notes = notes.Where(n => n.Title != null &&
+                                             n.Title.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
+                                 .ToList();
+                }
+
+                Notes.Clear();
+                foreach (var note in notes)
+                {
+                    Notes.Add(note);
+                }
+            }
         }
 
         // Method to start show the renaming text box

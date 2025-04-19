@@ -79,6 +79,7 @@ namespace Notebook_App.View
             // clear the current user session and clean up UI
             App.UserID = 0;
             contentRichTextBox.Document.Blocks.Clear();
+            searchTextBox.Text = string.Empty;
             viewModel.SelectedNote = null;
             viewModel.Notebooks.Clear();
             viewModel.Notes.Clear();

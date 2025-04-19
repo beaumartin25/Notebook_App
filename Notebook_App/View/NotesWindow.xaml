@@ -93,37 +93,49 @@
                           ShowsPreview="True"/>
 
             <!-- Note List -->
-            <ListView Grid.Column="2"
-                      Background="DarkGray"
-                      SelectedValue="{Binding SelectedNote, Mode=TwoWay}"
-                      ItemsSource="{Binding Notes}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <uc:NoteControl Note="{Binding}">
-                                <uc:NoteControl.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Rename Note"
-                                                  Command="{Binding Source={StaticResource vm}, Path=RenameNoteCommand}"/>
-                                        <MenuItem Header="Delete Note"
-                                                  Command="{Binding Source={StaticResource vm}, Path=DeleteNoteCommand}"
-                                                  CommandParameter="{Binding}"/>
-                                    </ContextMenu>
-                                </uc:NoteControl.ContextMenu>
-                            </uc:NoteControl>
-                            <TextBox Text="{Binding Title, Mode=TwoWay}"
-                                     Visibility="{Binding Source={StaticResource vm}, Path=IsRenameNoteVisible}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="LostFocus">
-                                        <i:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=EndRenameNoteCommand}"
-                                                               CommandParameter="{Binding}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <!-- This fills the remaining space -->
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0"
+                         Margin="10"
+                         Name="searchTextBox"
+                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+                <ListView Grid.Row="1"
+                          Background="DarkGray"
+                          SelectedValue="{Binding SelectedNote, Mode=TwoWay}"
+                          ItemsSource="{Binding Notes}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <uc:NoteControl Note="{Binding}">
+                                    <uc:NoteControl.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Rename Note"
+                                                      Command="{Binding Source={StaticResource vm}, Path=RenameNoteCommand}"/>
+                                            <MenuItem Header="Delete Note"
+                                                      Command="{Binding Source={StaticResource vm}, Path=DeleteNoteCommand}"
+                                                      CommandParameter="{Binding}"/>
+                                        </ContextMenu>
+                                    </uc:NoteControl.ContextMenu>
+                                </uc:NoteControl>
+                                <TextBox Text="{Binding Title, Mode=TwoWay}"
+                                         Visibility="{Binding Source={StaticResource vm}, Path=IsRenameNoteVisible}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="LostFocus">
+                                            <i:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=EndRenameNoteCommand}"
+                                                                   CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Grid>
 
             <!-- Splitter between Notes and Content -->
             <GridSplitter Grid.Column="3"
