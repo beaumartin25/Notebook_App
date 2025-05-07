@@ -188,7 +188,7 @@
                              SelectionChanged="contentRichTextBox_SelectionChanged"/>
             </Grid>
             <Grid Grid.Column="4"
-                  Visibility="{Binding IsCreateNotebookVisible}"
+                  Visibility="{Binding IsCreateNotebookFormVisible}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center">
                 <StackPanel>
@@ -198,7 +198,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="4"
-                  Visibility="{Binding IsCreateNoteVisible}"
+                  Visibility="{Binding IsCreateNoteFormVisible}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center">   
                 <StackPanel>

@@ -30,12 +30,16 @@ namespace Notebook_App.ViewModel
 			get { return selectedNotebook; }
 			set
 			{
-				selectedNotebook = value;
-				OnPropertyChanged("SelectedNotebook");
-                IsCreateNotebookVisible = Visibility.Collapsed;    
-                IsRichTextBoxVisible = Visibility.Collapsed;
-                IsCreateNoteVisible = Visibility.Visible;
-                GetNotes();
+                if (selectedNotebook != value)
+                {
+                    selectedNotebook = value;
+                    selectedNote = null;
+                    OnPropertyChanged("SelectedNotebook");
+                    IsCreateNotebookFormVisible = Visibility.Collapsed;
+                    IsRichTextBoxVisible = Visibility.Collapsed;
+                    IsCreateNoteFormVisible = Visibility.Visible;
+                    GetNotes();
+                }
 			}
 		}
 
@@ -47,10 +51,19 @@ namespace Notebook_App.ViewModel
 			{
 				selectedNote = value;
 				OnPropertyChanged("SelectedNote");
-                IsCreateNotebookVisible = Visibility.Collapsed;
-                IsCreateNoteVisible = Visibility.Collapsed;
-                IsRichTextBoxVisible = Visibility.Visible;
-				SelectedNoteChanged?.Invoke(this, EventArgs.Empty);
+                if (SelectedNote != null)
+                {
+                    IsCreateNotebookFormVisible = Visibility.Collapsed;
+                    IsCreateNoteFormVisible = Visibility.Collapsed;
+                    IsRichTextBoxVisible = Visibility.Visible;
+                    SelectedNoteChanged?.Invoke(this, EventArgs.Empty);
+                }
+                else 
+                {
+                    IsCreateNotebookFormVisible = Visibility.Collapsed;
+                    IsCreateNoteFormVisible = Visibility.Visible;
+                    IsRichTextBoxVisible = Visibility.Collapsed;
+                }
 			}
 		}
 
@@ -76,25 +89,25 @@ namespace Notebook_App.ViewModel
             }
         }
 
-        private Visibility isCreateNotebookVisible;
-        public Visibility IsCreateNotebookVisible
+        private Visibility isCreateNotebookFormVisible;
+        public Visibility IsCreateNotebookFormVisible
         {
-            get { return isCreateNotebookVisible; }
+            get { return isCreateNotebookFormVisible; }
             set 
             { 
-                isCreateNotebookVisible = value;
-                OnPropertyChanged("IsCreateNotebookVisible");
+                isCreateNotebookFormVisible = value;
+                OnPropertyChanged("IsCreateNotebookFormVisible");
             }
         }
 
-        private Visibility isCreateNoteVisible;
-        public Visibility IsCreateNoteVisible
+        private Visibility isCreateNoteFormVisible;
+        public Visibility IsCreateNoteFormVisible
         {
-            get { return isCreateNoteVisible; }
+            get { return isCreateNoteFormVisible; }
             set
             {
-                isCreateNoteVisible = value;
-                OnPropertyChanged("IsCreateNoteVisible");
+                isCreateNoteFormVisible = value;
+                OnPropertyChanged("IsCreateNoteFormVisible");
             }
         }
 
@@ -150,8 +163,8 @@ namespace Notebook_App.ViewModel
 
             IsRenameNotebookVisible = Visibility.Collapsed;
 			IsRenameNoteVisible = Visibility.Collapsed;
-            IsCreateNotebookVisible = Visibility.Visible;
-            IsCreateNoteVisible = Visibility.Collapsed;
+            IsCreateNotebookFormVisible = Visibility.Visible;
+            IsCreateNoteFormVisible = Visibility.Collapsed;
             IsRichTextBoxVisible = Visibility.Collapsed;
 
 			GetNoteBooks();
