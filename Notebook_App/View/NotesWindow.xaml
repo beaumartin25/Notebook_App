@@ -147,7 +147,8 @@
                           ShowsPreview="True"/>
 
             <!-- TextBox Content Area -->
-            <Grid Grid.Column="4">
+            <Grid Grid.Column="4"
+                  Visibility="{Binding IsRichTextBoxVisible}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -185,6 +186,27 @@
                              x:Name="contentRichTextBox"
                              TextChanged="contentRichTextBox_TextChanged"
                              SelectionChanged="contentRichTextBox_SelectionChanged"/>
+            </Grid>
+            <Grid Grid.Column="4"
+                  Visibility="{Binding IsCreateNotebookVisible}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Please select an existing notebook or"/>
+                    <Button Content="Create new notebook"
+                            Command="{Binding NewNotebookCommand}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="4"
+                  Visibility="{Binding IsCreateNoteVisible}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">   
+                <StackPanel>
+                    <TextBlock Text="Please select an existing note or"/>
+                    <Button Content="Create new note"
+                            Command="{Binding NewNoteCommand}"
+                            CommandParameter="{Binding SelectedNotebook}"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </DockPanel>

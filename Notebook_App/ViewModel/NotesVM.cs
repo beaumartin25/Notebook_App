@@ -32,7 +32,10 @@ namespace Notebook_App.ViewModel
 			{
 				selectedNotebook = value;
 				OnPropertyChanged("SelectedNotebook");
-				GetNotes();
+                IsCreateNotebookVisible = Visibility.Collapsed;    
+                IsRichTextBoxVisible = Visibility.Collapsed;
+                IsCreateNoteVisible = Visibility.Visible;
+                GetNotes();
 			}
 		}
 
@@ -44,6 +47,9 @@ namespace Notebook_App.ViewModel
 			{
 				selectedNote = value;
 				OnPropertyChanged("SelectedNote");
+                IsCreateNotebookVisible = Visibility.Collapsed;
+                IsCreateNoteVisible = Visibility.Collapsed;
+                IsRichTextBoxVisible = Visibility.Visible;
 				SelectedNoteChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
@@ -69,6 +75,40 @@ namespace Notebook_App.ViewModel
                 OnPropertyChanged("IsRenameNoteVisible");
             }
         }
+
+        private Visibility isCreateNotebookVisible;
+        public Visibility IsCreateNotebookVisible
+        {
+            get { return isCreateNotebookVisible; }
+            set 
+            { 
+                isCreateNotebookVisible = value;
+                OnPropertyChanged("IsCreateNotebookVisible");
+            }
+        }
+
+        private Visibility isCreateNoteVisible;
+        public Visibility IsCreateNoteVisible
+        {
+            get { return isCreateNoteVisible; }
+            set
+            {
+                isCreateNoteVisible = value;
+                OnPropertyChanged("IsCreateNoteVisible");
+            }
+        }
+
+        private Visibility isRichTextBoxVisible;
+        public Visibility IsRichTextBoxVisible
+        {
+            get { return isRichTextBoxVisible; }
+            set 
+            { 
+                isRichTextBoxVisible = value;
+                OnPropertyChanged("IsRichTextBoxVisible");
+            }
+        }
+
 
         private string searchQuery;
         public string SearchQuery
@@ -110,6 +150,9 @@ namespace Notebook_App.ViewModel
 
             IsRenameNotebookVisible = Visibility.Collapsed;
 			IsRenameNoteVisible = Visibility.Collapsed;
+            IsCreateNotebookVisible = Visibility.Visible;
+            IsCreateNoteVisible = Visibility.Collapsed;
+            IsRichTextBoxVisible = Visibility.Collapsed;
 
 			GetNoteBooks();
 		}
