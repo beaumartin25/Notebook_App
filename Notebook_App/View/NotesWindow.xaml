@@ -154,33 +154,39 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <ToolBar Grid.Row="0">
-                    <ToggleButton x:Name="boldButton" Click="boldButton_Click">
-                        <TextBlock Text="B" FontWeight="Bold"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="italicButton" Click="italicButton_Click">
-                        <TextBlock Text="I" FontStyle="Italic"/>
-                    </ToggleButton>
-                    <ToggleButton x:Name="underlineButton" Click="underlineButton_Click">
-                        <TextBlock Text="U" TextDecorations="Underline"/>
-                    </ToggleButton>
-                    <ComboBox x:Name="fontFamilyComboBox"
-                              Width="100"
-                              SelectionChanged="fontFamilyComboBox_SelectionChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Source}" FontFamily="{Binding}" FontSize="12"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <ComboBox x:Name="fontSizeComboBox"
-                              Width="50"
-                              IsEditable="True"
-                              TextBoxBase.TextChanged="fontSizeComboBox_TextChanged"/>
-                    <Button x:Name="saveButton"
-                            Content="Save"
-                            Click="saveButton_Click"/>
-                </ToolBar>
+                <StackPanel Grid.Row="0" Orientation="Vertical">
+                    <TextBlock Text="{Binding SelectedNote.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               FontSize="12"
+                               VerticalAlignment="Top"/>
+
+                    <ToolBar>
+                        <ToggleButton x:Name="boldButton" Click="boldButton_Click">
+                            <TextBlock Text="B" FontWeight="Bold"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="italicButton" Click="italicButton_Click">
+                            <TextBlock Text="I" FontStyle="Italic"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="underlineButton" Click="underlineButton_Click">
+                            <TextBlock Text="U" TextDecorations="Underline"/>
+                        </ToggleButton>
+                        <ComboBox x:Name="fontFamilyComboBox"
+                                  Width="100"
+                                  SelectionChanged="fontFamilyComboBox_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Source}" FontFamily="{Binding}" FontSize="12"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox x:Name="fontSizeComboBox"
+                                  Width="50"
+                                  IsEditable="True"
+                                  TextBoxBase.TextChanged="fontSizeComboBox_TextChanged"/>
+                        <Button x:Name="saveButton"
+                                Content="Save"
+                                Click="saveButton_Click"/>
+                    </ToolBar>
+                </StackPanel>
 
                 <RichTextBox Grid.Row="1"
                              x:Name="contentRichTextBox"
